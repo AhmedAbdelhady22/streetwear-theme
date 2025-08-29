@@ -1,19 +1,11 @@
 {
   "sections": {
-    "header": {
-      "type": "header"
-    },
     "main": {
       "type": "404",
       "settings": {}
-    },
-    "footer": {
-      "type": "footer"
     }
   },
   "order": [
-    "header",
-    "main", 
-    "footer"
+    "main"
   ]
 }
