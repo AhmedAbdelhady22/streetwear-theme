@@ -1,0 +1,412 @@
+<header class="header{% if settings.enable_sticky_header %} header--sticky{% endif %}">
+  <div class="header__container">
+    <!-- Logo -->
+    <div class="header__logo">
+      {% if settings.logo %}
+        {{ settings.logo | image_url: width: settings.logo_width | image_tag: 
+           loading: 'lazy',
+           width: settings.logo_width,
+           height: settings.logo_width | divided_by: settings.logo.aspect_ratio,
+           alt: shop.name }}
+      {% else %}
+        <h1 class="logo-text">
+          {{ shop.name | link_to: routes.root_url }}
+        </h1>
+      {% endif %}
+    </div>
+
+    <!-- Main Navigation -->
+    <nav class="header__navigation" aria-label="Main navigation">
+      <ul class="nav-list">
+        {% for link in section.settings.menu.links %}
+          <li class="nav-item">
+            <a href="{{ link.url }}" class="nav-link{% if link.active %} nav-link--active{% endif %}">
+              {{ link.title }}
+            </a>
+            {% if link.links != blank %}
+              <ul class="dropdown-menu">
+                {% for childlink in link.links %}
+                  <li class="dropdown-item">
+                    <a href="{{ childlink.url }}" class="dropdown-link">{{ childlink.title }}</a>
+                  </li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          </li>
+        {% endfor %}
+      </ul>
+    </nav>
+
+    <!-- Header Icons -->
+    <div class="header__icons">
+      {% if settings.show_search_icon %}
+        <button class="icon-button" aria-label="Search">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M19 19L14.65 14.65M17 9C17 13.4183 13.4183 17 9 17C4.58172 17 1 13.4183 1 9C1 4.58172 4.58172 1 9 1C13.4183 1 17 4.58172 17 9Z" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </button>
+      {% endif %}
+
+      {% if shop.customer_accounts_enabled %}
+        <a href="{{ routes.account_url }}" class="icon-button" aria-label="Account">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M10 10C12.7614 10 15 7.76142 15 5C15 2.23858 12.7614 0 10 0C7.23858 0 5 2.23858 5 5C5 7.76142 7.23858 10 10 10Z" fill="currentColor"/>
+            <path d="M3 20C3 16.134 6.13401 13 10 13C13.866 13 17 16.134 17 20H3Z" fill="currentColor"/>
+          </svg>
+        </a>
+      {% endif %}
+
+      <a href="{{ routes.cart_url }}" class="icon-button cart-icon" aria-label="Cart">
+        {% if cart.item_count > 0 %}
+          <span class="cart-count">{{ cart.item_count }}</span>
+        {% endif %}
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path d="M5 7H15L14 12H6L5 7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M5 7L4.5 5H2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="8.5" cy="16.5" r="1.5" stroke="currentColor" stroke-width="2"/>
+          <circle cx="12.5" cy="16.5" r="1.5" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </a>
+
+      <!-- Mobile Menu Toggle -->
+      <button class="mobile-menu-toggle" aria-label="Toggle menu">
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile Navigation -->
+  <nav class="mobile-navigation" aria-label="Mobile navigation">
+    <ul class="mobile-nav-list">
+      {% for link in section.settings.menu.links %}
+        <li class="mobile-nav-item">
+          <a href="{{ link.url }}" class="mobile-nav-link">{{ link.title }}</a>
+          {% if link.links != blank %}
+            <ul class="mobile-dropdown">
+              {% for childlink in link.links %}
+                <li class="mobile-dropdown-item">
+                  <a href="{{ childlink.url }}" class="mobile-dropdown-link">{{ childlink.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  </nav>
+</header>
+
+{% stylesheet %}
+  .header {
+    position: relative;
+    background-color: var(--color-background);
+    border-bottom: 1px solid var(--color-border);
+    z-index: 100;
+  }
+
+  .header--sticky {
+    position: sticky;
+    top: 0;
+  }
+
+  .header__container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-sm) var(--page-margin);
+    min-height: var(--header-height);
+  }
+
+  /* Logo Styles */
+  .header__logo img {
+    max-height: 60px;
+    width: auto;
+  }
+
+  .logo-text {
+    font-size: 1.5rem;
+    font-weight: var(--font-heading--weight);
+    font-family: var(--font-heading--family);
+  }
+
+  .logo-text a {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  /* Navigation Styles */
+  .header__navigation {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  .nav-list {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: var(--spacing-lg);
+  }
+
+  .nav-item {
+    position: relative;
+  }
+
+  .nav-link {
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: var(--spacing-xs) 0;
+    transition: var(--transition-fast);
+    position: relative;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+    transition: var(--transition-fast);
+  }
+
+  .nav-link:hover::after,
+  .nav-link--active::after {
+    width: 100%;
+  }
+
+  .nav-link:hover {
+    color: var(--color-accent);
+  }
+
+  /* Dropdown Styles */
+  .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--color-background);
+    box-shadow: var(--shadow-medium);
+    border: 1px solid var(--color-border);
+    min-width: 200px;
+    list-style: none;
+    margin: 0;
+    padding: var(--spacing-xs) 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: var(--transition-fast);
+  }
+
+  .nav-item:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+
+  .dropdown-link {
+    display: block;
+    padding: var(--spacing-xs) var(--spacing-sm);
+    color: var(--color-text);
+    text-decoration: none;
+    transition: var(--transition-fast);
+  }
+
+  .dropdown-link:hover {
+    background-color: var(--color-border);
+    color: var(--color-accent);
+  }
+
+  /* Header Icons */
+  .header__icons {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .icon-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: none;
+    color: var(--color-text);
+    cursor: pointer;
+    transition: var(--transition-fast);
+    position: relative;
+  }
+
+  .icon-button:hover {
+    color: var(--color-accent);
+  }
+
+  .cart-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background-color: var(--color-accent);
+    color: white;
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+  }
+
+  /* Mobile Menu Toggle */
+  .mobile-menu-toggle {
+    display: none;
+    flex-direction: column;
+    width: 24px;
+    height: 24px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    justify-content: space-between;
+  }
+
+  .hamburger-line {
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-text);
+    transition: var(--transition-fast);
+  }
+
+  /* Mobile Navigation */
+  .mobile-navigation {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: var(--color-background);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: var(--shadow-light);
+  }
+
+  .mobile-nav-list {
+    list-style: none;
+    margin: 0;
+    padding: var(--spacing-sm) 0;
+  }
+
+  .mobile-nav-link {
+    display: block;
+    padding: var(--spacing-sm) var(--page-margin);
+    color: var(--color-text);
+    text-decoration: none;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .mobile-nav-link:hover {
+    color: var(--color-accent);
+    background-color: var(--color-border);
+  }
+
+  .mobile-dropdown {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    background-color: var(--color-border);
+  }
+
+  .mobile-dropdown-link {
+    display: block;
+    padding: var(--spacing-xs) calc(var(--page-margin) + var(--spacing-sm));
+    color: var(--color-text-light);
+    text-decoration: none;
+    font-size: 0.9rem;
+  }
+
+  .mobile-dropdown-link:hover {
+    color: var(--color-accent);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .header__navigation {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      display: flex;
+    }
+
+    .header__container {
+      position: relative;
+    }
+
+    .header__logo {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .header__icons {
+      margin-left: auto;
+    }
+
+    .icon-button:not(.mobile-menu-toggle) {
+      width: 32px;
+      height: 32px;
+    }
+
+    .mobile-navigation.open {
+      display: block;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .header__container {
+      padding: var(--spacing-xs) var(--spacing-sm);
+    }
+
+    .logo-text {
+      font-size: 1.25rem;
+    }
+  }
+{% endstylesheet %}
+
+<script>
+  // Mobile menu toggle functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const mobileToggle = document.querySelector('.mobile-menu-toggle');
+    const mobileNav = document.querySelector('.mobile-navigation');
+    
+    if (mobileToggle && mobileNav) {
+      mobileToggle.addEventListener('click', function() {
+        mobileNav.classList.toggle('open');
+        this.classList.toggle('open');
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Main Menu",
+      "default": "main-menu"
+    }
+  ]
+}
+{% endschema %}

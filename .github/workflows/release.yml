@@ -1,0 +1,69 @@
+name: Create Theme Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  create-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Get version from tag
+        id: get_version
+        run: echo "VERSION=${GITHUB_REF#refs/tags/}" >> $GITHUB_OUTPUT
+
+      - name: Create theme package
+        run: |
+          mkdir -p release
+          zip -r "release/streetwear-pro-${{ steps.get_version.outputs.VERSION }}.zip" \
+            assets/ \
+            blocks/ \
+            config/ \
+            layout/ \
+            locales/ \
+            sections/ \
+            snippets/ \
+            templates/ \
+            *.md \
+            *.json \
+            .shopifyignore \
+            -x "*.git*" "*node_modules*" "*.DS_Store*"
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Streetwear Pro ${{ steps.get_version.outputs.VERSION }}
+          body: |
+            ## Changes in this Release
+            - Updated theme to version ${{ steps.get_version.outputs.VERSION }}
+            - See [CHANGELOG.md](CHANGELOG.md) for detailed changes
+            
+            ## Installation
+            1. Download the theme ZIP file below
+            2. Upload to your Shopify store via Admin > Online Store > Themes
+            3. Customize using the theme editor
+            
+            ## Documentation
+            - [Setup Guide](DOCUMENTATION.md)
+            - [Submission Guide](SUBMISSION_GUIDE.md)
+            - [Theme Store Checklist](THEME_STORE_CHECKLIST.md)
+          draft: false
+          prerelease: false
+
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./release/streetwear-pro-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_name: streetwear-pro-${{ steps.get_version.outputs.VERSION }}.zip
+          asset_content_type: application/zip

@@ -1,0 +1,69 @@
+{
+  "name": "Urban Edge",
+  "version": "1.0.0",
+  "description": "A modern, mobile-first Shopify theme designed specifically for streetwear and urban fashion brands.",
+  "author": "Your Company Name",
+  "homepage": "https://yourwebsite.com",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/urban-edge-theme"
+  },
+  "keywords": [
+    "shopify",
+    "theme",
+    "streetwear",
+    "fashion",
+    "urban",
+    "mobile-first",
+    "responsive",
+    "ecommerce"
+  ],
+  "license": "MIT",
+  "engines": {
+    "shopify": ">=2.0.0"
+  },
+  "features": [
+    "Mobile-first design",
+    "Advanced product filtering",
+    "Quick add to cart",
+    "Product image galleries",
+    "Shopping cart optimization",
+    "Enhanced search",
+    "Collection showcases",
+    "Social media integration",
+    "SEO optimization",
+    "Performance optimized"
+  ],
+  "demo_url": "https://your-demo-store.myshopify.com",
+  "documentation_url": "https://yourwebsite.com/docs/urban-edge",
+  "support_email": "support@yourcompany.com",
+  "price_range": "$180-$350",
+  "target_audience": [
+    "Streetwear brands",
+    "Urban fashion retailers",
+    "Sneaker stores",
+    "Lifestyle brands",
+    "Independent designers"
+  ],
+  "theme_settings": {
+    "colors": {
+      "customizable": true,
+      "presets": 5
+    },
+    "typography": {
+      "font_options": 10,
+      "google_fonts": true
+    },
+    "layout_options": {
+      "header_styles": 3,
+      "footer_layouts": 2,
+      "product_grid_options": 4
+    }
+  },
+  "performance": {
+    "lighthouse_score": "90+",
+    "mobile_optimized": true,
+    "page_speed": "Fast",
+    "image_optimization": true
+  }
+}

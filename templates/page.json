@@ -1,0 +1,50 @@
+{
+  "sections": {
+    "main": {
+      "type": "page",
+      "settings": {}
+    },
+    "about": {
+      "type": "about-section",
+      "settings": {
+        "tagline": "Our Story",
+        "heading": "Authentic Streetwear Culture",
+        "description": "<p>Born from the streets and inspired by urban culture, we create authentic streetwear that represents the voice of a generation. Our designs blend comfort, style, and self-expression.</p><p>Every piece tells a story, every design has purpose, and every collection represents our commitment to quality and authenticity.</p>",
+        "button_label": "Shop Collection",
+        "button_link": "/collections/all",
+        "values_heading": "What We Stand For",
+        "values_description": "The principles that guide everything we do."
+      },
+      "blocks": [
+        {
+          "type": "value",
+          "settings": {
+            "title": "Quality First",
+            "description": "Premium materials and construction in every piece we create.",
+            "icon_svg": "<svg width=\"60\" height=\"60\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M12 2L15.09 8.26L22 9L17 14L18.18 21L12 17.77L5.82 21L7 14L2 9L8.91 8.26L12 2Z\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "title": "Street Authenticity",
+            "description": "Designs rooted in real street culture and urban experiences.",
+            "icon_svg": "<svg width=\"60\" height=\"60\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M21 10C21 17L12 21L3 17V10L12 6L21 10Z\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M12 12L21 10\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M12 12V21\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M12 12L3 10\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "title": "Community Driven",
+            "description": "Built by and for the streetwear community that inspires us daily.",
+            "icon_svg": "<svg width=\"60\" height=\"60\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"9\" cy=\"7\" r=\"4\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M23 21V19C23 18.1645 22.7361 17.3541 22.2416 16.6944C21.7471 16.0348 21.0517 15.5654 20.2628 15.3543\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M16 3.13C16.8604 3.35031 17.5547 3.81166 18.0511 4.45892C18.5474 5.10618 18.8162 5.9103 18.8162 6.735C18.8162 7.5597 18.5474 8.36382 18.0511 9.01108C17.5547 9.65834 16.8604 10.1197 16 10.34\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+          }
+        }
+      ]
+    }
+  },
+  "order": [
+    "main",
+    "about"
+  ]
+}

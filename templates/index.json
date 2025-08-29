@@ -1,0 +1,74 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "settings": {
+        "tagline": "New Collection",
+        "heading": "Define Your Style",
+        "description": "Discover our latest streetwear collection featuring bold designs and premium quality materials.",
+        "button_label": "Shop Now",
+        "button_link": "/collections/all",
+        "overlay_opacity": 30,
+        "full_height": false
+      }
+    },
+    "collections": {
+      "type": "collections-showcase",
+      "blocks": [
+        {
+          "type": "collection",
+          "settings": {
+            "size": "large",
+            "custom_title": "T-Shirts & Tops",
+            "description": "Essential streetwear pieces for everyday wear",
+            "button_label": "Shop Tops",
+            "overlay_opacity": 25
+          }
+        },
+        {
+          "type": "collection",
+          "settings": {
+            "size": "medium",
+            "custom_title": "Hoodies & Sweatshirts",
+            "description": "Comfort meets style",
+            "button_label": "Shop Hoodies",
+            "overlay_opacity": 30
+          }
+        },
+        {
+          "type": "collection",
+          "settings": {
+            "size": "medium",
+            "custom_title": "Accessories",
+            "description": "Complete your look",
+            "button_label": "Shop Accessories",
+            "overlay_opacity": 20
+          }
+        }
+      ],
+      "settings": {
+        "tagline": "Shop by",
+        "heading": "Our Collections",
+        "description": "Explore our curated collections of premium streetwear essentials."
+      }
+    },
+    "featured_products": {
+      "type": "featured-products",
+      "settings": {
+        "tagline": "Featured",
+        "heading": "Popular Products",
+        "description": "Check out our most popular items that everyone is talking about.",
+        "products_to_show": 8,
+        "products_per_row": "4",
+        "show_vendor": false,
+        "show_rating": false,
+        "show_view_all": true
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "collections",
+    "featured_products"
+  ]
+}

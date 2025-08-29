@@ -1,0 +1,320 @@
+<section class="hero-banner{% if section.settings.full_height %} hero-banner--full-height{% endif %}">
+  <div class="hero-banner__container">
+    <div class="hero-banner__media">
+      {% if section.settings.image %}
+        <img 
+          src="{{ section.settings.image | image_url: width: 1920 }}" 
+          alt="{{ section.settings.image.alt | escape }}"
+          loading="eager"
+          width="1920"
+          height="{{ 1920 | divided_by: section.settings.image.aspect_ratio }}"
+          class="hero-banner__image"
+        >
+      {% else %}
+        <div class="hero-banner__placeholder">
+          <svg width="100" height="100" viewBox="0 0 100 100" fill="none">
+            <rect width="100" height="100" fill="#f0f0f0"/>
+            <text x="50" y="50" text-anchor="middle" dy=".35em" fill="#999">Hero Image</text>
+          </svg>
+        </div>
+      {% endif %}
+      
+      {% if section.settings.overlay_opacity > 0 %}
+        <div class="hero-banner__overlay" style="opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }}"></div>
+      {% endif %}
+    </div>
+
+    <div class="hero-banner__content">
+      <div class="hero-banner__text">
+        {% if section.settings.tagline %}
+          <p class="hero-banner__tagline">{{ section.settings.tagline }}</p>
+        {% endif %}
+        
+        {% if section.settings.heading %}
+          <h1 class="hero-banner__heading">{{ section.settings.heading }}</h1>
+        {% endif %}
+        
+        {% if section.settings.description %}
+          <p class="hero-banner__description">{{ section.settings.description }}</p>
+        {% endif %}
+        
+        {% if section.settings.button_label and section.settings.button_link %}
+          <div class="hero-banner__buttons">
+            <a href="{{ section.settings.button_link }}" class="btn {% if section.settings.button_style == 'secondary' %}btn--secondary{% elsif section.settings.button_style == 'accent' %}btn--accent{% endif %}">
+              {{ section.settings.button_label }}
+            </a>
+            
+            {% if section.settings.button_label_2 and section.settings.button_link_2 %}
+              <a href="{{ section.settings.button_link_2 }}" class="btn btn--secondary">
+                {{ section.settings.button_label_2 }}
+              </a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .hero-banner {
+    position: relative;
+    overflow: hidden;
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-banner--full-height {
+    min-height: 100vh;
+  }
+
+  .hero-banner__container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .hero-banner__media {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+  }
+
+  .hero-banner__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+
+  .hero-banner__placeholder {
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hero-banner__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    z-index: 2;
+  }
+
+  .hero-banner__content {
+    position: relative;
+    z-index: 3;
+    width: 100%;
+    color: white;
+    text-align: center;
+    padding: var(--spacing-xl) var(--page-margin);
+  }
+
+  .hero-banner__text {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .hero-banner__tagline {
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .hero-banner__heading {
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: var(--font-heading--weight);
+    line-height: 1.1;
+    margin-bottom: var(--spacing-md);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+  }
+
+  .hero-banner__description {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    margin-bottom: var(--spacing-xl);
+    opacity: 0.9;
+  }
+
+  .hero-banner__buttons {
+    display: flex;
+    gap: var(--spacing-sm);
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  /* Light content variation */
+  .hero-banner--light-content .hero-banner__content {
+    color: var(--color-text);
+  }
+
+  .hero-banner--light-content .hero-banner__heading {
+    text-shadow: none;
+  }
+
+  .hero-banner--light-content .hero-banner__description {
+    color: var(--color-text-light);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .hero-banner {
+      min-height: 50vh;
+    }
+
+    .hero-banner__content {
+      padding: var(--spacing-lg) var(--spacing-sm);
+    }
+
+    .hero-banner__buttons {
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .hero-banner__buttons .btn {
+      width: 100%;
+      max-width: 300px;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .hero-banner {
+      min-height: 40vh;
+    }
+
+    .hero-banner__heading {
+      font-size: 2rem;
+    }
+
+    .hero-banner__description {
+      font-size: 1rem;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_height",
+      "label": "Full Height",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Overlay Opacity",
+      "default": 30
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "New Collection"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Define Your Style"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Discover our latest streetwear collection featuring bold designs and premium quality materials."
+    },
+    {
+      "type": "header",
+      "content": "Primary Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button Style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        },
+        {
+          "value": "accent",
+          "label": "Accent"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "header",
+      "content": "Secondary Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label_2",
+      "label": "Second Button Label"
+    },
+    {
+      "type": "url",
+      "id": "button_link_2",
+      "label": "Second Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner",
+      "settings": {
+        "tagline": "New Collection",
+        "heading": "Define Your Style",
+        "description": "Discover our latest streetwear collection featuring bold designs and premium quality materials.",
+        "button_label": "Shop Now"
+      }
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,66 @@
+{% style %}
+  {% # Loads all font variations with display: swap %}
+  {{ settings.type_primary_font | font_face: font_display: 'swap' }}
+  {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+  {{ settings.type_primary_font | font_modify: 'weight', 'bold' | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+  {{ settings.type_primary_font | font_modify: 'style', 'italic' | font_face: font_display: 'swap' }}
+  
+  {% if settings.type_heading_font %}
+    {{ settings.type_heading_font | font_face: font_display: 'swap' }}
+    {{ settings.type_heading_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+  {% endif %}
+
+  :root {
+    /* Typography */
+    --font-primary--family: {{ settings.type_primary_font.family }}, {{ settings.type_primary_font.fallback_families }};
+    --font-primary--style: {{ settings.type_primary_font.style }};
+    --font-primary--weight: {{ settings.type_primary_font.weight }};
+    --font-heading--family: {% if settings.type_heading_font %}{{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }}{% else %}{{ settings.type_primary_font.family }}, {{ settings.type_primary_font.fallback_families }}{% endif %};
+    --font-heading--weight: {% if settings.type_heading_font %}{{ settings.type_heading_font.weight }}{% else %}700{% endif %};
+    
+    /* Layout */
+    --page-width: {{ settings.max_page_width }};
+    --page-margin: {{ settings.min_page_margin }}px;
+    --header-height: 80px;
+    --container-padding: 2rem;
+    
+    /* Colors */
+    --color-primary: {{ settings.color_primary | default: '#000000' }};
+    --color-secondary: {{ settings.color_secondary | default: '#ffffff' }};
+    --color-accent: {{ settings.color_accent | default: '#ff6b35' }};
+    --color-background: {{ settings.color_background | default: '#ffffff' }};
+    --color-text: {{ settings.color_text | default: '#000000' }};
+    --color-text-light: {{ settings.color_text_light | default: '#666666' }};
+    --color-border: #e1e1e1;
+    --color-success: #28a745;
+    --color-error: #dc3545;
+    --color-warning: #ffc107;
+    
+    /* Legacy support */
+    --color-foreground: var(--color-text);
+    
+    /* Spacing */
+    --spacing-xs: 0.5rem;
+    --spacing-sm: 1rem;
+    --spacing-md: 1.5rem;
+    --spacing-lg: 2rem;
+    --spacing-xl: 3rem;
+    --spacing-xxl: 4rem;
+    
+    /* Border radius */
+    --radius-small: 4px;
+    --radius-medium: 8px;
+    --radius-large: 16px;
+    --style-border-radius-inputs: var(--radius-small);
+    
+    /* Shadows */
+    --shadow-light: 0 2px 4px rgba(0, 0, 0, 0.1);
+    --shadow-medium: 0 4px 8px rgba(0, 0, 0, 0.12);
+    --shadow-heavy: 0 8px 16px rgba(0, 0, 0, 0.15);
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-medium: 0.3s ease;
+    --transition-slow: 0.5s ease;
+  }
+{% endstyle %}

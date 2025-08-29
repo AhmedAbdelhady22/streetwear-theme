@@ -1,0 +1,424 @@
+<section class="about-section section-padding">
+  <div class="container">
+    <div class="about__layout">
+      <div class="about__content">
+        {% if section.settings.tagline %}
+          <p class="section-tagline">{{ section.settings.tagline }}</p>
+        {% endif %}
+        
+        {% if section.settings.heading %}
+          <h2 class="section-heading">{{ section.settings.heading }}</h2>
+        {% endif %}
+        
+        {% if section.settings.description %}
+          <div class="about__description">
+            {{ section.settings.description }}
+          </div>
+        {% endif %}
+        
+        {% if section.settings.button_label and section.settings.button_link %}
+          <div class="about__button">
+            <a href="{{ section.settings.button_link }}" class="btn {% if section.settings.button_style == 'secondary' %}btn--secondary{% elsif section.settings.button_style == 'accent' %}btn--accent{% endif %}">
+              {{ section.settings.button_label }}
+            </a>
+          </div>
+        {% endif %}
+      </div>
+      
+      {% if section.settings.image %}
+        <div class="about__media">
+          <img 
+            src="{{ section.settings.image | image_url: width: 800 }}" 
+            alt="{{ section.settings.image.alt | escape }}"
+            loading="lazy"
+            width="800"
+            height="{{ 800 | divided_by: section.settings.image.aspect_ratio }}"
+            class="about__image"
+          >
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- Values/Features Section -->
+{% if section.blocks.size > 0 %}
+  <section class="values-section section-padding">
+    <div class="container">
+      {% if section.settings.values_heading %}
+        <div class="section-header text-center mb-xl">
+          <h2 class="section-heading">{{ section.settings.values_heading }}</h2>
+          {% if section.settings.values_description %}
+            <p class="section-description">{{ section.settings.values_description }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+      
+      <div class="values-grid grid grid--3-col">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'value' %}
+              <div class="value-card" {{ block.shopify_attributes }}>
+                {% if block.settings.icon %}
+                  <div class="value-card__icon">
+                    <img 
+                      src="{{ block.settings.icon | image_url: width: 80 }}" 
+                      alt="{{ block.settings.icon.alt | escape }}"
+                      loading="lazy"
+                      width="80"
+                      height="80"
+                    >
+                  </div>
+                {% elsif block.settings.icon_svg %}
+                  <div class="value-card__icon">
+                    {{ block.settings.icon_svg }}
+                  </div>
+                {% endif %}
+                
+                {% if block.settings.title %}
+                  <h3 class="value-card__title">{{ block.settings.title }}</h3>
+                {% endif %}
+                
+                {% if block.settings.description %}
+                  <p class="value-card__description">{{ block.settings.description }}</p>
+                {% endif %}
+              </div>
+          {% endcase %}
+        {% endfor %}
+      </div>
+    </div>
+  </section>
+{% endif %}
+
+{% stylesheet %}
+  .about-section {
+    background-color: var(--color-background);
+  }
+
+  .about__layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-xxl);
+    align-items: center;
+  }
+
+  .about__content {
+    {% if section.settings.text_alignment == 'center' %}
+      text-align: center;
+    {% elsif section.settings.text_alignment == 'right' %}
+      text-align: right;
+    {% endif %}
+  }
+
+  .about__description {
+    line-height: 1.7;
+    font-size: 1.125rem;
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .about__description p {
+    margin-bottom: var(--spacing-md);
+  }
+
+  .about__description p:last-child {
+    margin-bottom: 0;
+  }
+
+  .about__button {
+    margin-top: var(--spacing-lg);
+  }
+
+  .about__media {
+    position: relative;
+  }
+
+  .about__image {
+    width: 100%;
+    height: auto;
+    border-radius: var(--radius-large);
+    box-shadow: var(--shadow-medium);
+  }
+
+  /* Values Section */
+  .values-section {
+    background-color: var(--color-border);
+  }
+
+  .values-grid {
+    gap: var(--spacing-xl);
+  }
+
+  .value-card {
+    text-align: center;
+    padding: var(--spacing-xl);
+    background-color: var(--color-background);
+    border-radius: var(--radius-large);
+    transition: var(--transition-medium);
+  }
+
+  .value-card:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-medium);
+  }
+
+  .value-card__icon {
+    margin-bottom: var(--spacing-lg);
+    display: flex;
+    justify-content: center;
+  }
+
+  .value-card__icon img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+  }
+
+  .value-card__icon svg {
+    width: 60px;
+    height: 60px;
+    color: var(--color-accent);
+  }
+
+  .value-card__title {
+    font-size: 1.25rem;
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text);
+  }
+
+  .value-card__description {
+    color: var(--color-text-light);
+    line-height: 1.6;
+  }
+
+  /* Layout variations */
+  .about__layout--reverse {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .about__layout--reverse .about__content {
+    order: 2;
+  }
+
+  .about__layout--reverse .about__media {
+    order: 1;
+  }
+
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .about__layout {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-xl);
+      text-align: center;
+    }
+
+    .about__layout--reverse .about__content,
+    .about__layout--reverse .about__media {
+      order: unset;
+    }
+
+    .about__description {
+      font-size: 1rem;
+    }
+
+    .values-grid {
+      grid-template-columns: 1fr;
+      gap: var(--spacing-lg);
+    }
+
+    .value-card {
+      padding: var(--spacing-lg);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .about__layout {
+      gap: var(--spacing-lg);
+    }
+
+    .value-card {
+      padding: var(--spacing-md);
+    }
+
+    .value-card__icon img,
+    .value-card__icon svg {
+      width: 50px;
+      height: 50px;
+    }
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "About Section",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "Our Story"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Authentic Streetwear Culture"
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
+      "default": "<p>Born from the streets and inspired by urban culture, we create authentic streetwear that represents the voice of a generation. Our designs blend comfort, style, and self-expression.</p><p>Every piece tells a story, every design has purpose, and every collection represents our commitment to quality and authenticity.</p>"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text Alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "checkbox",
+      "id": "reverse_layout",
+      "label": "Reverse Layout",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button Style",
+      "options": [
+        {
+          "value": "primary",
+          "label": "Primary"
+        },
+        {
+          "value": "secondary",
+          "label": "Secondary"
+        },
+        {
+          "value": "accent",
+          "label": "Accent"
+        }
+      ],
+      "default": "primary"
+    },
+    {
+      "type": "header",
+      "content": "Values Section"
+    },
+    {
+      "type": "text",
+      "id": "values_heading",
+      "label": "Values Heading",
+      "default": "What We Stand For"
+    },
+    {
+      "type": "text",
+      "id": "values_description",
+      "label": "Values Description",
+      "default": "The principles that guide everything we do."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "value",
+      "name": "Value",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon Image"
+        },
+        {
+          "type": "html",
+          "id": "icon_svg",
+          "label": "Icon SVG",
+          "info": "Use SVG code for custom icons"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Section",
+      "settings": {
+        "tagline": "Our Story",
+        "heading": "Authentic Streetwear Culture",
+        "description": "<p>Born from the streets and inspired by urban culture, we create authentic streetwear that represents the voice of a generation. Our designs blend comfort, style, and self-expression.</p><p>Every piece tells a story, every design has purpose, and every collection represents our commitment to quality and authenticity.</p>",
+        "values_heading": "What We Stand For",
+        "values_description": "The principles that guide everything we do."
+      },
+      "blocks": [
+        {
+          "type": "value",
+          "settings": {
+            "title": "Quality First",
+            "description": "Premium materials and construction in every piece we create.",
+            "icon_svg": "<svg width=\"60\" height=\"60\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M12 2L15.09 8.26L22 9L17 14L18.18 21L12 17.77L5.82 21L7 14L2 9L8.91 8.26L12 2Z\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "title": "Street Authenticity",
+            "description": "Designs rooted in real street culture and urban experiences.",
+            "icon_svg": "<svg width=\"60\" height=\"60\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M21 10C21 17L12 21L3 17V10L12 6L21 10Z\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M12 12L21 10\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M12 12V21\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M12 12L3 10\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+          }
+        },
+        {
+          "type": "value",
+          "settings": {
+            "title": "Community Driven",
+            "description": "Built by and for the streetwear community that inspires us daily.",
+            "icon_svg": "<svg width=\"60\" height=\"60\" viewBox=\"0 0 24 24\" fill=\"none\"><path d=\"M17 21V19C17 17.9391 16.5786 16.9217 15.8284 16.1716C15.0783 15.4214 14.0609 15 13 15H5C3.93913 15 2.92172 15.4214 2.17157 16.1716C1.42143 16.9217 1 17.9391 1 19V21\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><circle cx=\"9\" cy=\"7\" r=\"4\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M23 21V19C23 18.1645 22.7361 17.3541 22.2416 16.6944C21.7471 16.0348 21.0517 15.5654 20.2628 15.3543\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M16 3.13C16.8604 3.35031 17.5547 3.81166 18.0511 4.45892C18.5474 5.10618 18.8162 5.9103 18.8162 6.735C18.8162 7.5597 18.5474 8.36382 18.0511 9.01108C17.5547 9.65834 16.8604 10.1197 16 10.34\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/></svg>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

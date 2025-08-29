@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "product-main",
+      "settings": {
+        "show_vendor": true,
+        "show_rating": true,
+        "show_size_guide": true,
+        "show_features": true,
+        "show_share_buttons": true,
+        "show_related_products": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

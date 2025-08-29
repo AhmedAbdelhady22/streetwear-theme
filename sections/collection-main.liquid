@@ -1,0 +1,1009 @@
+<section class="collection-main">
+  <div class="container">
+    <!-- Collection Header -->
+    <div class="collection__header">
+      {% if collection.image %}
+        <div class="collection__hero">
+          <img 
+            src="{{ collection.image | image_url: width: 1200 }}" 
+            alt="{{ collection.image.alt | escape }}"
+            loading="eager"
+            width="1200"
+            height="{{ 1200 | divided_by: collection.image.aspect_ratio }}"
+            class="collection__hero-image"
+          >
+          <div class="collection__hero-overlay"></div>
+          <div class="collection__hero-content">
+            <h1 class="collection__title">{{ collection.title }}</h1>
+            {% if collection.description != blank %}
+              <p class="collection__description">{{ collection.description }}</p>
+            {% endif %}
+          </div>
+        </div>
+      {% else %}
+        <div class="collection__header-simple">
+          <h1 class="collection__title">{{ collection.title }}</h1>
+          {% if collection.description != blank %}
+            <p class="collection__description">{{ collection.description }}</p>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="collection__content">
+      <!-- Filters and Sort -->
+      <div class="collection__toolbar">
+        <div class="collection__filters">
+          <button class="filters-toggle btn btn--secondary" aria-expanded="false">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path d="M2.5 5H17.5M5 10H15M7.5 15H12.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            Filters
+          </button>
+          
+          <div class="active-filters" style="display: none;">
+            <span class="active-filters__label">Active filters:</span>
+            <div class="active-filters__list"></div>
+            <button class="clear-filters">Clear all</button>
+          </div>
+        </div>
+
+        <div class="collection__sort">
+          <label for="sort-by" class="collection__sort-label">Sort by:</label>
+          <select name="sort_by" id="sort-by" class="collection__sort-select">
+            <option value="manual">Featured</option>
+            <option value="best-selling">Best selling</option>
+            <option value="title-ascending">Alphabetically, A-Z</option>
+            <option value="title-descending">Alphabetically, Z-A</option>
+            <option value="price-ascending">Price, low to high</option>
+            <option value="price-descending">Price, high to low</option>
+            <option value="created-ascending">Date, old to new</option>
+            <option value="created-descending">Date, new to old</option>
+          </select>
+        </div>
+
+        <div class="collection__view-toggle">
+          <button class="view-toggle view-toggle--grid active" data-view="grid" aria-label="Grid view">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <rect x="2" y="2" width="6" height="6" rx="1"/>
+              <rect x="12" y="2" width="6" height="6" rx="1"/>
+              <rect x="2" y="12" width="6" height="6" rx="1"/>
+              <rect x="12" y="12" width="6" height="6" rx="1"/>
+            </svg>
+          </button>
+          <button class="view-toggle view-toggle--list" data-view="list" aria-label="List view">
+            <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+              <rect x="2" y="4" width="16" height="2" rx="1"/>
+              <rect x="2" y="9" width="16" height="2" rx="1"/>
+              <rect x="2" y="14" width="16" height="2" rx="1"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="collection__layout">
+        <!-- Sidebar Filters -->
+        <aside class="collection__sidebar">
+          <div class="filters-panel">
+            <div class="filters-panel__header">
+              <h3 class="filters-panel__title">Filters</h3>
+              <button class="filters-panel__close">&times;</button>
+            </div>
+
+            <!-- Price Filter -->
+            <div class="filter-group">
+              <h4 class="filter-group__title">Price</h4>
+              <div class="price-filter">
+                <div class="price-filter__inputs">
+                  <input type="number" placeholder="Min" class="price-filter__input" id="price-min">
+                  <span class="price-filter__separator">-</span>
+                  <input type="number" placeholder="Max" class="price-filter__input" id="price-max">
+                </div>
+                <button class="btn btn--secondary price-filter__apply">Apply</button>
+              </div>
+            </div>
+
+            <!-- Availability Filter -->
+            <div class="filter-group">
+              <h4 class="filter-group__title">Availability</h4>
+              <div class="filter-options">
+                <label class="filter-option">
+                  <input type="checkbox" value="in-stock">
+                  <span class="filter-option__label">In stock</span>
+                  <span class="filter-option__count">({{ collection.products.size }})</span>
+                </label>
+                <label class="filter-option">
+                  <input type="checkbox" value="out-of-stock">
+                  <span class="filter-option__label">Out of stock</span>
+                  <span class="filter-option__count">(0)</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- Size Filter -->
+            {% assign sizes = collection.products | map: 'variants' | flatten | map: 'option2' | compact | uniq | sort %}
+            {% if sizes.size > 0 %}
+              <div class="filter-group">
+                <h4 class="filter-group__title">Size</h4>
+                <div class="filter-options filter-options--sizes">
+                  {% for size in sizes %}
+                    <label class="filter-option filter-option--size">
+                      <input type="checkbox" value="{{ size | downcase }}">
+                      <span class="filter-option__label">{{ size }}</span>
+                    </label>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+
+            <!-- Color Filter -->
+            {% assign colors = collection.products | map: 'variants' | flatten | map: 'option1' | compact | uniq | sort %}
+            {% if colors.size > 0 %}
+              <div class="filter-group">
+                <h4 class="filter-group__title">Color</h4>
+                <div class="filter-options filter-options--colors">
+                  {% for color in colors %}
+                    <label class="filter-option filter-option--color">
+                      <input type="checkbox" value="{{ color | downcase }}">
+                      <span class="filter-option__color-swatch" style="background-color: {{ color | downcase }}"></span>
+                      <span class="filter-option__label">{{ color }}</span>
+                    </label>
+                  {% endfor %}
+                </div>
+              </div>
+            {% endif %}
+          </div>
+        </aside>
+
+        <!-- Products Grid -->
+        <div class="collection__products">
+          <div class="collection__results">
+            <p class="collection__count">{{ collection.products_count }} product{% unless collection.products_count == 1 %}s{% endunless %}</p>
+          </div>
+
+          {% if collection.products.size > 0 %}
+            <div class="product-grid grid grid--4-col" id="product-grid">
+              {% for product in collection.products %}
+                <div class="product-card" 
+                     data-price="{{ product.price }}" 
+                     data-availability="{% if product.available %}in-stock{% else %}out-of-stock{% endif %}"
+                     data-colors="{{ product.variants | map: 'option1' | compact | join: ',' | downcase }}"
+                     data-sizes="{{ product.variants | map: 'option2' | compact | join: ',' | downcase }}">
+                  <div class="product-card__media">
+                    <a href="{{ product.url }}" class="product-card__link">
+                      {% if product.featured_media %}
+                        <img 
+                          src="{{ product.featured_media | image_url: width: 600 }}" 
+                          alt="{{ product.featured_media.alt | escape }}"
+                          loading="lazy"
+                          width="600"
+                          height="{{ 600 | divided_by: product.featured_media.aspect_ratio }}"
+                          class="product-card__image"
+                        >
+                        
+                        {% if product.media[1] %}
+                          <img 
+                            src="{{ product.media[1] | image_url: width: 600 }}" 
+                            alt="{{ product.media[1].alt | escape }}"
+                            loading="lazy"
+                            width="600"
+                            height="{{ 600 | divided_by: product.media[1].aspect_ratio }}"
+                            class="product-card__image product-card__image--hover"
+                          >
+                        {% endif %}
+                      {% else %}
+                        <div class="product-card__placeholder">
+                          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                        </div>
+                      {% endif %}
+                      
+                      {% if product.compare_at_price > product.price %}
+                        <span class="product-badge product-badge--sale">Sale</span>
+                      {% endif %}
+                      
+                      {% unless product.available %}
+                        <span class="product-badge product-badge--sold-out">Sold Out</span>
+                      {% endunless %}
+                    </a>
+
+                    <div class="product-card__actions">
+                      <button class="btn btn--accent product-card__quick-view" data-product-id="{{ product.id }}">
+                        Quick View
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="product-card__content">
+                    <h3 class="product-card__title">
+                      <a href="{{ product.url }}">{{ product.title }}</a>
+                    </h3>
+                    
+                    {% if product.vendor and section.settings.show_vendor %}
+                      <p class="product-card__vendor">{{ product.vendor }}</p>
+                    {% endif %}
+
+                    <div class="product-card__price">
+                      {% if product.compare_at_price > product.price %}
+                        <span class="price price--sale">{{ product.price | money }}</span>
+                        <span class="price price--compare">{{ product.compare_at_price | money }}</span>
+                      {% else %}
+                        <span class="price">{{ product.price | money }}</span>
+                      {% endif %}
+                    </div>
+
+                    {% if product.variants.size > 1 %}
+                      <div class="product-card__variants">
+                        <!-- Color swatches -->
+                        {% assign unique_colors = product.variants | map: 'option1' | uniq %}
+                        {% if unique_colors.size > 1 %}
+                          <div class="color-swatches">
+                            {% for color in unique_colors limit: 5 %}
+                              <span class="color-swatch" style="background-color: {{ color | downcase }}" title="{{ color }}"></span>
+                            {% endfor %}
+                            {% if unique_colors.size > 5 %}
+                              <span class="color-swatch color-swatch--more">+{{ unique_colors.size | minus: 5 }}</span>
+                            {% endif %}
+                          </div>
+                        {% endif %}
+                      </div>
+                    {% endif %}
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+
+            <!-- Pagination -->
+            {% if paginate.pages > 1 %}
+              <nav class="pagination" aria-label="Pagination">
+                <div class="pagination__list">
+                  {% if paginate.previous %}
+                    <a href="{{ paginate.previous.url }}" class="pagination__item pagination__item--prev">
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M10 12L6 8L10 4"/>
+                      </svg>
+                      Previous
+                    </a>
+                  {% endif %}
+
+                  {% for part in paginate.parts %}
+                    {% if part.is_link %}
+                      <a href="{{ part.url }}" class="pagination__item">{{ part.title }}</a>
+                    {% else %}
+                      {% if part.title == paginate.current_page %}
+                        <span class="pagination__item pagination__item--current">{{ part.title }}</span>
+                      {% else %}
+                        <span class="pagination__item pagination__item--gap">{{ part.title }}</span>
+                      {% endif %}
+                    {% endif %}
+                  {% endfor %}
+
+                  {% if paginate.next %}
+                    <a href="{{ paginate.next.url }}" class="pagination__item pagination__item--next">
+                      Next
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor">
+                        <path d="M6 4L10 8L6 12"/>
+                      </svg>
+                    </a>
+                  {% endif %}
+                </div>
+              </nav>
+            {% endif %}
+          {% else %}
+            <div class="collection__empty">
+              <h2>No products found</h2>
+              <p>Try adjusting your filters or browse our other collections.</p>
+              <a href="/collections" class="btn btn--accent">Browse Collections</a>
+            </div>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% stylesheet %}
+  .collection-main {
+    padding: var(--spacing-lg) 0;
+  }
+
+  /* Collection Header */
+  .collection__hero {
+    position: relative;
+    height: 400px;
+    border-radius: var(--radius-large);
+    overflow: hidden;
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .collection__hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .collection__hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.3));
+  }
+
+  .collection__hero-content {
+    position: absolute;
+    bottom: var(--spacing-xl);
+    left: var(--spacing-xl);
+    right: var(--spacing-xl);
+    color: white;
+  }
+
+  .collection__header-simple {
+    text-align: center;
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-xl) 0;
+  }
+
+  .collection__title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .collection__description {
+    font-size: 1.125rem;
+    line-height: 1.6;
+    opacity: 0.9;
+    max-width: 600px;
+  }
+
+  .collection__header-simple .collection__description {
+    margin: 0 auto;
+    color: var(--color-text-light);
+  }
+
+  /* Toolbar */
+  .collection__toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-xl);
+    padding: var(--spacing-md) 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .collection__filters {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+  }
+
+  .filters-toggle {
+    display: none;
+    align-items: center;
+    gap: var(--spacing-xs);
+  }
+
+  .active-filters {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+    flex-wrap: wrap;
+  }
+
+  .active-filters__label {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+  }
+
+  .active-filters__list {
+    display: flex;
+    gap: var(--spacing-xs);
+  }
+
+  .clear-filters {
+    background: none;
+    border: none;
+    color: var(--color-accent);
+    text-decoration: underline;
+    cursor: pointer;
+    font-size: 0.875rem;
+  }
+
+  .collection__sort {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-sm);
+  }
+
+  .collection__sort-label {
+    font-size: 0.875rem;
+    color: var(--color-text-light);
+  }
+
+  .collection__sort-select {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    background-color: var(--color-background);
+  }
+
+  .collection__view-toggle {
+    display: flex;
+    gap: var(--spacing-xs);
+  }
+
+  .view-toggle {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-background);
+    cursor: pointer;
+    border-radius: var(--radius-small);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-fast);
+  }
+
+  .view-toggle.active {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: white;
+  }
+
+  /* Layout */
+  .collection__layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: var(--spacing-xl);
+  }
+
+  /* Sidebar */
+  .collection__sidebar {
+    position: sticky;
+    top: calc(var(--header-height) + var(--spacing-lg));
+    height: fit-content;
+  }
+
+  .filters-panel {
+    background-color: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-medium);
+    padding: var(--spacing-lg);
+  }
+
+  .filters-panel__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: var(--spacing-lg);
+    padding-bottom: var(--spacing-sm);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .filters-panel__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+
+  .filters-panel__close {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: var(--color-text-light);
+  }
+
+  .filter-group {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .filter-group:last-child {
+    margin-bottom: 0;
+  }
+
+  .filter-group__title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-xs);
+  }
+
+  .filter-options--sizes,
+  .filter-options--colors {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: var(--spacing-sm);
+  }
+
+  .filter-option {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    cursor: pointer;
+    font-size: 0.875rem;
+  }
+
+  .filter-option--size,
+  .filter-option--color {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: var(--spacing-xs);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    min-width: 60px;
+  }
+
+  .filter-option--color {
+    min-width: auto;
+    width: 60px;
+  }
+
+  .filter-option__color-swatch {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+    margin-bottom: var(--spacing-xs);
+  }
+
+  .filter-option__count {
+    color: var(--color-text-light);
+    font-size: 0.75rem;
+  }
+
+  .filter-option input[type="checkbox"] {
+    margin: 0;
+  }
+
+  .filter-option--size input,
+  .filter-option--color input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .filter-option--size:has(input:checked),
+  .filter-option--color:has(input:checked) {
+    border-color: var(--color-accent);
+    background-color: rgba(var(--color-accent), 0.1);
+  }
+
+  /* Price Filter */
+  .price-filter__inputs {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    margin-bottom: var(--spacing-sm);
+  }
+
+  .price-filter__input {
+    flex: 1;
+    padding: var(--spacing-xs);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-small);
+    font-size: 0.875rem;
+  }
+
+  .price-filter__separator {
+    color: var(--color-text-light);
+  }
+
+  .price-filter__apply {
+    width: 100%;
+    font-size: 0.875rem;
+    padding: var(--spacing-xs);
+  }
+
+  /* Products */
+  .collection__results {
+    margin-bottom: var(--spacing-lg);
+  }
+
+  .collection__count {
+    color: var(--color-text-light);
+    font-size: 0.875rem;
+  }
+
+  .product-grid {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  /* Color Swatches */
+  .color-swatches {
+    display: flex;
+    gap: var(--spacing-xs);
+    margin-top: var(--spacing-xs);
+  }
+
+  .color-swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    border: 1px solid var(--color-border);
+  }
+
+  .color-swatch--more {
+    background-color: var(--color-text-light);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.625rem;
+    font-weight: 600;
+  }
+
+  /* Empty State */
+  .collection__empty {
+    text-align: center;
+    padding: var(--spacing-xxl) 0;
+  }
+
+  .collection__empty h2 {
+    margin-bottom: var(--spacing-sm);
+    color: var(--color-text-light);
+  }
+
+  .collection__empty p {
+    margin-bottom: var(--spacing-lg);
+    color: var(--color-text-light);
+  }
+
+  /* Pagination */
+  .pagination {
+    margin-top: var(--spacing-xl);
+  }
+
+  .pagination__list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: var(--spacing-xs);
+  }
+
+  .pagination__item {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-sm) var(--spacing-md);
+    border: 1px solid var(--color-border);
+    background-color: var(--color-background);
+    color: var(--color-text);
+    text-decoration: none;
+    border-radius: var(--radius-small);
+    transition: var(--transition-fast);
+    min-width: 44px;
+    justify-content: center;
+  }
+
+  .pagination__item:hover {
+    background-color: var(--color-border);
+  }
+
+  .pagination__item--current {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
+    color: white;
+  }
+
+  .pagination__item--gap {
+    border: none;
+    background: none;
+    color: var(--color-text-light);
+  }
+
+  /* Responsive Design */
+  @media (max-width: 1024px) {
+    .collection__layout {
+      grid-template-columns: 1fr;
+    }
+
+    .collection__sidebar {
+      position: fixed;
+      top: 0;
+      left: -100%;
+      width: 300px;
+      height: 100vh;
+      background-color: var(--color-background);
+      z-index: 1000;
+      transition: var(--transition-medium);
+      overflow-y: auto;
+    }
+
+    .collection__sidebar.open {
+      left: 0;
+    }
+
+    .filters-toggle {
+      display: flex;
+    }
+
+    .filters-panel {
+      height: 100%;
+      border: none;
+      border-radius: 0;
+    }
+
+    .filters-panel__close {
+      display: block;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .collection__toolbar {
+      flex-direction: column;
+      align-items: stretch;
+      gap: var(--spacing-sm);
+    }
+
+    .collection__filters {
+      justify-content: space-between;
+    }
+
+    .collection__sort {
+      justify-content: space-between;
+    }
+
+    .collection__view-toggle {
+      justify-content: center;
+    }
+
+    .collection__hero {
+      height: 300px;
+    }
+
+    .collection__hero-content {
+      bottom: var(--spacing-lg);
+      left: var(--spacing-lg);
+      right: var(--spacing-lg);
+    }
+
+    .product-grid {
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    }
+
+    .pagination__list {
+      flex-wrap: wrap;
+      gap: var(--spacing-xs);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .collection__hero {
+      height: 250px;
+    }
+
+    .collection__hero-content {
+      bottom: var(--spacing-md);
+      left: var(--spacing-md);
+      right: var(--spacing-md);
+    }
+
+    .product-grid {
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: var(--spacing-sm);
+    }
+
+    .collection__sidebar {
+      width: 100%;
+    }
+  }
+{% endstylesheet %}
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Filter toggle
+    const filtersToggle = document.querySelector('.filters-toggle');
+    const sidebar = document.querySelector('.collection__sidebar');
+    const filtersClose = document.querySelector('.filters-panel__close');
+    
+    if (filtersToggle) {
+      filtersToggle.addEventListener('click', function() {
+        sidebar.classList.toggle('open');
+        this.setAttribute('aria-expanded', sidebar.classList.contains('open'));
+      });
+    }
+    
+    if (filtersClose) {
+      filtersClose.addEventListener('click', function() {
+        sidebar.classList.remove('open');
+        filtersToggle.setAttribute('aria-expanded', 'false');
+      });
+    }
+
+    // View toggle
+    const viewToggles = document.querySelectorAll('.view-toggle');
+    const productGrid = document.getElementById('product-grid');
+    
+    viewToggles.forEach(toggle => {
+      toggle.addEventListener('click', function() {
+        const view = this.dataset.view;
+        
+        viewToggles.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        
+        if (view === 'list') {
+          productGrid.classList.add('product-grid--list');
+        } else {
+          productGrid.classList.remove('product-grid--list');
+        }
+      });
+    });
+
+    // Sort functionality
+    const sortSelect = document.getElementById('sort-by');
+    if (sortSelect) {
+      sortSelect.addEventListener('change', function() {
+        const url = new URL(window.location);
+        url.searchParams.set('sort_by', this.value);
+        window.location = url;
+      });
+    }
+
+    // Filter functionality
+    const filterInputs = document.querySelectorAll('.filter-option input[type="checkbox"]');
+    const productCards = document.querySelectorAll('.product-card');
+    const activeFiltersList = document.querySelector('.active-filters__list');
+    const activeFiltersContainer = document.querySelector('.active-filters');
+    const clearFiltersButton = document.querySelector('.clear-filters');
+    
+    function updateFilters() {
+      const activeFilters = {
+        price: { min: null, max: null },
+        availability: [],
+        sizes: [],
+        colors: []
+      };
+      
+      // Collect active filters
+      filterInputs.forEach(input => {
+        if (input.checked) {
+          const filterGroup = input.closest('.filter-group');
+          const groupTitle = filterGroup.querySelector('.filter-group__title').textContent.toLowerCase();
+          
+          if (groupTitle === 'availability') {
+            activeFilters.availability.push(input.value);
+          } else if (groupTitle === 'size') {
+            activeFilters.sizes.push(input.value);
+          } else if (groupTitle === 'color') {
+            activeFilters.colors.push(input.value);
+          }
+        }
+      });
+      
+      // Price filter
+      const priceMin = document.getElementById('price-min');
+      const priceMax = document.getElementById('price-max');
+      if (priceMin && priceMin.value) activeFilters.price.min = parseFloat(priceMin.value);
+      if (priceMax && priceMax.value) activeFilters.price.max = parseFloat(priceMax.value);
+      
+      // Filter products
+      let visibleCount = 0;
+      productCards.forEach(card => {
+        let show = true;
+        
+        // Price filter
+        if (activeFilters.price.min || activeFilters.price.max) {
+          const price = parseFloat(card.dataset.price) / 100; // Convert from cents
+          if (activeFilters.price.min && price < activeFilters.price.min) show = false;
+          if (activeFilters.price.max && price > activeFilters.price.max) show = false;
+        }
+        
+        // Availability filter
+        if (activeFilters.availability.length > 0) {
+          const availability = card.dataset.availability;
+          if (!activeFilters.availability.includes(availability)) show = false;
+        }
+        
+        // Size filter
+        if (activeFilters.sizes.length > 0) {
+          const productSizes = card.dataset.sizes.split(',');
+          const hasMatchingSize = activeFilters.sizes.some(size => 
+            productSizes.some(productSize => productSize.includes(size))
+          );
+          if (!hasMatchingSize) show = false;
+        }
+        
+        // Color filter
+        if (activeFilters.colors.length > 0) {
+          const productColors = card.dataset.colors.split(',');
+          const hasMatchingColor = activeFilters.colors.some(color => 
+            productColors.some(productColor => productColor.includes(color))
+          );
+          if (!hasMatchingColor) show = false;
+        }
+        
+        card.style.display = show ? 'block' : 'none';
+        if (show) visibleCount++;
+      });
+      
+      // Update count
+      const countElement = document.querySelector('.collection__count');
+      if (countElement) {
+        countElement.textContent = `${visibleCount} product${visibleCount !== 1 ? 's' : ''}`;
+      }
+      
+      // Update active filters display
+      updateActiveFiltersDisplay(activeFilters);
+    }
+    
+    function updateActiveFiltersDisplay(filters) {
+      const hasActiveFilters = filters.availability.length > 0 || 
+                               filters.sizes.length > 0 || 
+                               filters.colors.length > 0 || 
+                               filters.price.min || 
+                               filters.price.max;
+      
+      if (hasActiveFilters) {
+        activeFiltersContainer.style.display = 'flex';
+        // You can implement active filter tags here
+      } else {
+        activeFiltersContainer.style.display = 'none';
+      }
+    }
+    
+    // Add event listeners
+    filterInputs.forEach(input => {
+      input.addEventListener('change', updateFilters);
+    });
+    
+    const priceApplyButton = document.querySelector('.price-filter__apply');
+    if (priceApplyButton) {
+      priceApplyButton.addEventListener('click', updateFilters);
+    }
+    
+    if (clearFiltersButton) {
+      clearFiltersButton.addEventListener('click', function() {
+        filterInputs.forEach(input => input.checked = false);
+        document.getElementById('price-min').value = '';
+        document.getElementById('price-max').value = '';
+        updateFilters();
+      });
+    }
+
+    // Quick view functionality
+    const quickViewButtons = document.querySelectorAll('.product-card__quick-view');
+    quickViewButtons.forEach(button => {
+      button.addEventListener('click', function(e) {
+        e.preventDefault();
+        const productId = this.dataset.productId;
+        // Implement quick view modal here
+        console.log('Quick view for product:', productId);
+      });
+    });
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Collection Main",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Enable filtering",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable sorting",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

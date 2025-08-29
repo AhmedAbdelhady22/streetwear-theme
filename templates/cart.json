@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "cart-main",
+      "settings": {
+        "show_vendor": true,
+        "show_shipping_note": true,
+        "shipping_note": "Free shipping on orders over $75",
+        "show_free_shipping_bar": true,
+        "free_shipping_threshold": 7500,
+        "show_security_note": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

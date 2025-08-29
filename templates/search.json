@@ -1,0 +1,51 @@
+{
+  "sections": {
+    "main": {
+      "type": "search-main",
+      "settings": {
+        "show_vendor": true,
+        "show_type_filter": true,
+        "products_per_page": 24
+      },
+      "blocks": [
+        {
+          "type": "search_suggestion",
+          "settings": {
+            "search_term": "hoodies"
+          }
+        },
+        {
+          "type": "search_suggestion",
+          "settings": {
+            "search_term": "t-shirts"
+          }
+        },
+        {
+          "type": "search_suggestion",
+          "settings": {
+            "search_term": "sneakers"
+          }
+        },
+        {
+          "type": "search_suggestion",
+          "settings": {
+            "search_term": "accessories"
+          }
+        },
+        {
+          "type": "search_suggestion",
+          "settings": {
+            "search_term": "sale"
+          }
+        },
+        {
+          "type": "search_suggestion",
+          "settings": {
+            "search_term": "new arrivals"
+          }
+        }
+      ]
+    }
+  },
+  "order": ["main"]
+}
