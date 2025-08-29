@@ -3,7 +3,7 @@
 > A modern, mobile-first Shopify theme designed specifically for streetwear and urban fashion brands.
 
 [![Shopify Theme](https://img.shields.io/badge/Shopify-Theme-green)](https://shopify.com)
-[![Version](https://img.shields.io/badge/Version-1.0.0-blue)](https://github.com/yourusername/urban-edge-theme)
+[![Version](https://img.shields.io/badge/Version-1.0.0-blue)](https://github.com/AhmedAbdelhady22/streetwear-pro-theme)
 [![License](https://img.shields.io/badge/License-MIT-yellow)](./LICENSE.md)
 
 ## 🚀 Features
@@ -105,7 +105,7 @@ For detailed setup instructions, see [DOCUMENTATION.md](./DOCUMENTATION.md)
 
 - **Documentation**: [DOCUMENTATION.md](./DOCUMENTATION.md)
 - **Changelog**: [CHANGELOG.md](./CHANGELOG.md)
-- **Issues**: [GitHub Issues](https://github.com/yourusername/urban-edge-theme/issues)
+- **Issues**: [GitHub Issues](https://github.com/AhmedAbdelhady22/streetwear-pro-theme/issues)
 - **Email Support**: support@yourcompany.com
 
 ## 📄 License

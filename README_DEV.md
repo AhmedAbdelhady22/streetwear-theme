@@ -2,8 +2,8 @@
 
 > A modern, mobile-first Shopify theme designed specifically for streetwear and urban fashion brands.
 
-[![GitHub release](https://img.shields.io/github/release/ahmed/streetwear-pro-theme.svg)](https://github.com/ahmed/streetwear-pro-theme/releases)
-[![Theme Check](https://img.shields.io/badge/Theme%20Check-Passing-brightgreen)](https://github.com/ahmed/streetwear-pro-theme/actions)
+[![GitHub release](https://img.shields.io/github/release/AhmedAbdelhady22/streetwear-pro-theme.svg)](https://github.com/AhmedAbdelhady22/streetwear-pro-theme/releases)
+[![Theme Check](https://img.shields.io/badge/Theme%20Check-Passing-brightgreen)](https://github.com/AhmedAbdelhady22/streetwear-pro-theme/actions)
 [![License](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE.md)
 
 ## 🚀 Features
@@ -48,7 +48,7 @@
 ### Installation
 ```bash
 # Clone the repository
-git clone https://github.com/ahmed/streetwear-pro-theme.git
+git clone https://github.com/AhmedAbdelhady22/streetwear-pro-theme.git
 cd streetwear-pro-theme
 
 # Connect to your development store
@@ -239,8 +239,8 @@ Test across major browsers:
 ## 📞 Support
 
 - **Documentation**: [Theme Documentation](DOCUMENTATION.md)
-- **Issues**: [GitHub Issues](https://github.com/ahmed/streetwear-pro-theme/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/ahmed/streetwear-pro-theme/discussions)
+- **Issues**: [GitHub Issues](https://github.com/AhmedAbdelhady22/streetwear-pro-theme/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/AhmedAbdelhady22/streetwear-pro-theme/discussions)
 - **Email**: support@yourthemes.com
 
 ## 📄 License
