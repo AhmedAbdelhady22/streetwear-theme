@@ -15,6 +15,13 @@
         "content": "Brand Identity"
       },
       {
+        "type": "text",
+        "id": "brand_name",
+        "label": "Brand Name",
+        "info": "Leave empty to use your store name",
+        "placeholder": "Enter your brand name"
+      },
+      {
         "type": "image_picker",
         "id": "logo",
         "label": "Logo"

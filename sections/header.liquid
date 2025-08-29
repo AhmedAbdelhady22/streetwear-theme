@@ -10,7 +10,9 @@
            alt: shop.name }}
       {% else %}
         <h1 class="logo-text">
-          {{ shop.name | link_to: routes.root_url }}
+          <a href="{{ routes.root_url }}">
+            {{ settings.brand_name | default: shop.name }}
+          </a>
         </h1>
       {% endif %}
     </div>

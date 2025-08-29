@@ -14,7 +14,7 @@
                 height="{{ 200 | divided_by: settings.logo.aspect_ratio }}"
               >
             {% else %}
-              <h3 class="footer__brand-name">{{ shop.name }}</h3>
+              <h3 class="footer__brand-name">{{ settings.brand_name | default: shop.name }}</h3>
             {% endif %}
           </div>
           
@@ -133,7 +133,7 @@
     <div class="container">
       <div class="footer__bottom-content">
         <div class="footer__copyright">
-          <p>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. All rights reserved.</p>
+          <p>&copy; {{ 'now' | date: '%Y' }} {{ settings.brand_name | default: shop.name }}. All rights reserved.</p>
         </div>
         
         {% if section.settings.show_payment_icons %}

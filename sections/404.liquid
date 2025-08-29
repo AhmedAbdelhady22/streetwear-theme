@@ -5,19 +5,116 @@
   https://shopify.dev/docs/storefronts/themes/architecture/templates/404
 {% endcomment %}
 
-<h1>{{ '404.title' | t }}</h1>
+<div class="page-404">
+  <div class="container">
+    <div class="page-404__content">
+      <div class="page-404__graphic">
+        <div class="page-404__number">404</div>
+        <div class="page-404__message">{{ '404.not_found' | t }}</div>
+      </div>
+      
+      <div class="page-404__text">
+        <p class="page-404__description">
+          {{ section.settings.description | default: "The page you're looking for doesn't exist. But don't worry, we've got fresh streetwear waiting for you." }}
+        </p>
+        
+        <div class="page-404__actions">
+          <a href="{{ routes.root_url }}" class="btn btn--primary">
+            {{ section.settings.back_home_text | default: "Back to Home" }}
+          </a>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn--secondary">
+            {{ section.settings.shop_text | default: "Shop Collection" }}
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-<p>
-  {{ '404.not_found' | t }}
-</p>
+<style>
+  .page-404 {
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 4rem 0;
+  }
 
-<a href="{{ routes.all_products_collection_url }}">
-  {{ '404.back_to_shopping' | t }}
-</a>
+  .page-404__content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .page-404__number {
+    font-size: clamp(4rem, 12vw, 8rem);
+    font-weight: 900;
+    line-height: 1;
+    color: var(--color-accent);
+    margin-bottom: 1rem;
+    font-family: var(--font-heading-family);
+  }
+
+  .page-404__message {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    color: var(--color-foreground);
+  }
+
+  .page-404__description {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 2.5rem;
+    color: var(--color-foreground-75);
+  }
+
+  .page-404__actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  @media screen and (max-width: 768px) {
+    .page-404 {
+      padding: 2rem 0;
+    }
+    
+    .page-404__actions {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .page-404__actions .btn {
+      width: 100%;
+      max-width: 280px;
+    }
+  }
+</style>
 
 {% schema %}
 {
-  "name": "t:general.404",
-  "settings": []
+  "name": "404 Page",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "The page you're looking for doesn't exist. But don't worry, we've got fresh streetwear waiting for you."
+    },
+    {
+      "type": "text",
+      "id": "back_home_text",
+      "label": "Back to Home Button Text",
+      "default": "Back to Home"
+    },
+    {
+      "type": "text",
+      "id": "shop_text",
+      "label": "Shop Button Text",
+      "default": "Shop Collection"
+    }
+  ]
 }
 {% endschema %}

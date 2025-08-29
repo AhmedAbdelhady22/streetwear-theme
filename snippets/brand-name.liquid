@@ -1,0 +1,6 @@
+{% comment %}
+  Snippet to render the brand name consistently throughout the theme
+  Uses custom brand name setting if available, otherwise falls back to shop name
+{% endcomment %}
+
+{{ settings.brand_name | default: shop.name }}
