@@ -18,7 +18,7 @@
 2. **Click "New Repository"** (green button)
 3. **Repository Settings:**
    ```
-   Repository name: streetwear-pro-theme
+   Repository name: streetwear-theme
    Description: A modern, mobile-first Shopify theme for streetwear brands
    Visibility: Public ✅
    Initialize: Do NOT check any boxes (we already have files)
@@ -28,7 +28,7 @@
 ### **Connect Local Repository to GitHub**
 ```bash
 # Add GitHub as remote origin
-git remote add origin https://github.com/AhmedAbdelhady22/streetwear-pro-theme.git
+git remote add origin https://github.com/AhmedAbdelhady22/streetwear-theme.git
 
 # Set main as default branch
 git branch -M main
@@ -59,7 +59,7 @@ git push -u origin main
 2. **Source:** Deploy from a branch
 3. **Branch:** main / (root)
 4. **Your documentation will be available at:**
-   `https://AhmedAbdelhady22.github.io/streetwear-pro-theme`
+   `https://AhmedAbdelhady22.github.io/streetwear-theme`
 
 ---
 
@@ -222,7 +222,7 @@ git push origin v1.0.1
 ## ✅ **Quick Setup Checklist**
 
 ### **Repository Setup**
-- [ ] Create GitHub repository: `streetwear-pro-theme`
+- [ ] Create GitHub repository: `streetwear-theme`
 - [ ] Push local code to GitHub
 - [ ] Configure repository settings
 - [ ] Add Shopify secrets for deployment
@@ -251,4 +251,4 @@ git push origin v1.0.1
 
 **🎉 You're Ready!** Your theme is now professionally hosted on GitHub with automated deployments, comprehensive documentation, and ready for Shopify Theme Store submission!
 
-**Repository URL:** `https://github.com/AhmedAbdelhady22/streetwear-pro-theme`
+**Repository URL:** `https://github.com/AhmedAbdelhady22/streetwear-theme`
